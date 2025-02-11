@@ -59,9 +59,9 @@ scwin.viewItem = async function (items,searchText){
     //items.slice(0,30);
     items.forEach(item => {
         const li = document.createElement('li');
-        let listStr = `<span class="workdiv">[${scwin.getSelectValue(item.division, scwin.ds_workDivision)}]<\span><strong>${scwin.highlightText(item.subject,searchText)}<strong/><span class="workdate">(${item.date})<\span>
-        <span class="workteamMember">업무협업 : ${scwin.getSelectvalue(item.teamMember, scwin.ds_teamMember)} </span><span class="buttonArea"><button id="btn_modify" class="btnModify" onclick="scwin.modifyItem(${item.id})">수정<\button> <button id="btn_delete" class="btnDelete" onclick="scwin.deleteItem(${item.id})">삭제<\button><\span>
-        <p class="workcontent">${scwin.highlightText(scwin.convertLinksToAnchorTags(item.contents, item.images),searchText)}<\p>`;
+        let listStr = `<span class="workdiv">[${scwin.getSelectValue(item.division, scwin.ds_workDivision)}]</span><strong>${scwin.highlightText(item.subject,searchText)}<strong/><span class="workdate">(${item.date})</span>
+        <span class="workteamMember">업무협업 : ${scwin.getSelectvalue(item.teamMember, scwin.ds_teamMember)} </span><span class="buttonArea"><button id="btn_modify" class="btnModify" onclick="scwin.modifyItem(${item.id})">수정</button> <button id="btn_delete" class="btnDelete" onclick="scwin.deleteItem(${item.id})">삭제</button></span>
+        <p class="workcontent">${scwin.highlightText(scwin.convertLinksToAnchorTags(item.contents, item.images),searchText)}</p>`;
         li.innerHTML = liStr;
         list.appendChild(li);
     });
