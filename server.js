@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const {exec} = require('child_peocess');
+const {exec} = require('child_process');
 
 const PORT = 4000;
 const DATA_FILE = path.join(__dirname, 'data.json');
