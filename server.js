@@ -7,14 +7,14 @@ const PORT = 4000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 const BACKUP_DIR = path.join(__dirname, 'backup');
 const CONFIG_PATH = path.join(__dirname, 'config.json');
-const CONFIG = fs.existsSync(CONFIG_PATH) ? JASON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) : {};
+const CONFIG = fs.existsSync(CONFIG_PATH) ? JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) : {};
 
 const backupDataFile = () => {
     if(!fs.existsSync(BACKUP_DIR)){
         fs.mkdirSync(BACKUP_DIR, {recursive:true});
-        consloe.log("backup 폴더가 생성되었습니다.")
+        console.log("backup 폴더가 생성되었습니다.")
     }
-    if(fs.existsSunc(DATA_FILE)){
+    if(fs.existsSync(DATA_FILE)){
         const now = new Date();
         const today = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()+1).padStart(2,'0')}${String(now.getHours()).padStart(2,'0')}`;
         const backupFile = path.join(BACKUP_DIR, `backup_${today}.json`);
