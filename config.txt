@@ -1,0 +1,5 @@
+;!@Install@!UTF-8!
+Title="Node.js EXE"
+BeginPrompt="Node.js 애플리케이션을 실행하시겠습니까?"
+RunProgram="run.bat"
+;!@InstallEnd@!
