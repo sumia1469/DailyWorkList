@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my worklist<\title>
+    <link rel="stylesheet" href="/common/css/style.css"/>
+    <script defer src="/common/js/common.js"/>
+<\head>
+<body>
+    <h1>INK기업은행 정책자금시스템 재구축사업 일일업무일지<\h1>
+    <p class="info_txt">타이틀 클릭시 내용오픈<\p>
+    <h2 class="tit_sub toggle-header">업무 입력창<\h2>
+    <div class="inputbox content">
+        <input type="hidden" id="ibx_workId" />
+        <input type="hidden" id="ibx_searchInput" />
+        <table>
+            <tbody>
+                <tr>
+                    <th>담당자명<\th>
+                    <td><input type="text" id="ibx_userNm" idsabled><\td>
+                    <th>담당자ID<\th>
+                    <td><input type="text" id="ibx_userId" idsabled><\td>
+                </tr>
+                <tr>
+                    <th>업무날짜<\th>
+                    <td colspan="3"><input type="timeStamp" id="ibx_workdate" idsabled><\td>
+                </tr>
+                <tr>
+                    <th>업무제목<\th>
+                    <td colspan="3"><input type="date" id="ibx_subject" placeholder="데이터입력"><\td>
+                </tr>
+                <tr>
+                    <th>업무종류<\th>
+                    <td colspan="3">
+                        <select id="sbx_divsion"><\select>
+                    <\td>
+                </tr>
+                <tr>
+                    <th>업무상세<\th>
+                    <td colspan="3"><textarea id="ibx_content" ><\textarea><\td>
+                </tr>
+                <tr>
+                    <th>업무협업<\th>
+                    <td colspan="3">
+                        <select id="sbx_teamMember"><\select>
+                    <\td>
+                </tr>
+            <\tbody>
+        <\table>
+        <div class="buttonBox">
+            <button id="btn_insert" onclick="scwin.addItem()">업무입력</button>
+            <button id="btn_reset" onclick="scwin.resetItem()">신규입력 초기화</button>
+        <\div>
+    <\div>
+    <h2 class="tit_sub toggle-header">조회<\h2>
+    <div class="searchBox content" id="grp_searchBox">
+        <table>
+            <tbody>
+                <tr>
+                    <th>업무제목/내용<\th>
+                    <td><input type="text" id="ibx_searchSub" placeholder="검색어 입력"><\td>
+                    <th>업무날짜<\th>
+                    <td><input type="date" id="ibx_fromDate" /><\td>
+                </tr>
+                <tr>
+                    <th>업무종류<\th>
+                    <td><select id="sbx_searchDivsion"><\select><\td>
+                    <th>업무협업<\th>
+                    <td><select id="sbx_searchTeamMem"><\select><\td>
+                </tr>
+            <\tbody>
+        <\table>
+        <div class="buttonBox">
+            <button onclick="scwin.searchItem()">리스트 조회<\button>
+        <\div>
+    <\div>
+    <h2 class="tit_sub toggle-header">업무리스트<span id="txb_markLen"><\span><\h2>
+    <div id="listbox content" class="listbox">
+        <ul id="itemList"><\ul>
+    <\div>
+<\body>
+<\html>
