@@ -76,7 +76,7 @@ const server = http.createServer((req, res) => {
     }else if(method==='GET' && url==='/items'){
         res.writeHead(200, {'Content-Type':'application/json'});
         res.end(JSON.stringify(readData()));
-    }else if(method==='GET' && url.startswith('/item/')){
+    }else if(method==='GET' && url.startsWith('/item/')){
         const id = parseInt(url.split('/')[2]);
         req.on('data', chunk => {body += chunk});
         req.on('end', () => {
