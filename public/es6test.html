@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES6 지원 여부 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #result {
+            font-size: 1.5em;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📢 ES6 지원 여부 테스트</h1>
+    <p>아래 결과를 확인하세요:</p>
+    <div id="result">테스트 중...</div>
+
+    <h2>🔎 지원되는 ES6 기능</h2>
+    <ul id="feature-list"></ul>
+
+    <script>
+        function checkES6Support() {
+            let resultDiv = document.getElementById("result");
+            let featureList = document.getElementById("feature-list");
+            let support = true;
+
+            const tests = [
+                { name: "let / const", test: () => { let a = 1; const b = 2; return a + b === 3; } },
+                { name: "Arrow Function", test: () => { return (() => 2)() === 2; } },
+                { name: "Class", test: () => { class Test {}; return typeof Test === "function"; } },
+                { name: "Template Literals", test: () => { return `test` === "test"; } },
+                { name: "Destructuring", test: () => { let [a, b] = [1, 2]; return a === 1 && b === 2; } },
+                { name: "Default Parameters", test: () => { return ((x = 5) => x)() === 5; } },
+                { name: "Promise", test: () => { return typeof Promise !== "undefined"; } },
+                { name: "async / await", test: () => { return typeof (async function() {}) === "function"; } },
+                { name: "Spread Operator (...)", test: () => { return Math.max(...[1, 2, 3]) === 3; } },
+                { name: "ES6 Modules", test: () => { return "noModule" in document.createElement("script"); } },
+                { name: "Optional Chaining (?.)", test: () => { return ({})?.a === undefined; } },
+                { name: "Nullish Coalescing (??)", test: () => { return (null ?? "default") === "default"; } }
+            ];
+
+            tests.forEach(({ name, test }) => {
+                let li = document.createElement("li");
+                try {
+                    if (test()) {
+                        li.textContent = `✅ ${name} 지원됨`;
+                        li.style.color = "green";
+                    } else {
+                        li.textContent = `❌ ${name} 미지원`;
+                        li.style.color = "red";
+                        support = false;
+                    }
+                } catch (e) {
+                    li.textContent = `❌ ${name} 미지원`;
+                    li.style.color = "red";
+                    support = false;
+                }
+                featureList.appendChild(li);
+            });
+
+            if (support) {
+                resultDiv.textContent = "✅ 이 브라우저는 ES6을 완벽하게 지원합니다!";
+                resultDiv.classList.add("success");
+            } else {
+                resultDiv.textContent = "❌ 이 브라우저는 ES6을 완벽히 지원하지 않습니다!";
+                resultDiv.classList.add("fail");
+            }
+        }
+
+        checkES6Support();
+    </script>
+
+</body>
+</html>
