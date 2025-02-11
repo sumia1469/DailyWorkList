@@ -333,12 +333,11 @@ window.onload = async () => {
                                     if (/<table[^>]*>/.test(htmlText)) {
                                         console.log("📊 테이블이 감지되었습니다.");
                                         contents.value = text.substring(0, start) + htmlText + text.substring(end);
-                                    } else {
-                                        console.log("📄 일반 HTML 데이터 감지됨.");
-                                    }
-                                    addedData = true;
+                                    }  
                                 });
-                            });
+                                addedData =true;
+                            })
+                        }
                     } else {
                         // ✅ 이미지 데이터인 경우
                         if (type.startsWith("image/")) {
@@ -352,10 +351,8 @@ window.onload = async () => {
                                     if (/<table[^>]*>/.test(htmlText)) {
                                         console.log("📊 테이블이 감지되었습니다.");
                                         contents.value = text.substring(0, start) + htmlText + text.substring(end);
-                                    } else {
-                                        console.log("📄 일반 HTML 데이터 감지됨.");
-                                    }
-                                    addedData = true;
+                                        addedData = true;
+                                    }  
                                 });
                             });
                         }
@@ -370,7 +367,7 @@ window.onload = async () => {
                             });
                         }
                     }
-                };
+                })
             });
     
             // ✅ clipboard.read()로 감지되지 않는 경우 `readText()`로 확인
@@ -415,5 +412,5 @@ window.onload = async () => {
                 console.warn("🚫 지원되지 않는 파일 유형:", file.type);
             }
         }
-    });
+    })
 }

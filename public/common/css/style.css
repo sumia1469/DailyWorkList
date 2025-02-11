@@ -1,6 +1,6 @@
 body {
     font-family:"Courier New";
-    background-colr:#fff;
+    background-color:#fff;
     text-align:center;
     margin:50px;
     color:#000;
@@ -126,7 +126,7 @@ h2 {
     padding:10px;
     background:#ececec;
     border-radius:10px;
-    margin-botton:3px;
+    margin-bottom:3px;
 }
 .listBox ul li span.buttonArea {
     position:absolute;
@@ -135,7 +135,7 @@ h2 {
 }
 .listBox ul li button{
     text-align:left;
-    padding.3px;
+    padding:3px;
     background:#c9c9c9;
     border-radius:10px;
 }
