@@ -154,6 +154,35 @@ const server = http.createServer((req, res) => {
             res.writeHead(404, {'Content-Type' : 'application/json'});
             res.end(JSON.stringify({message:"item not found"}));
         }
+    } else if (method === 'POST' && url === '/execute') {
+        let body = '';
+
+        req.on('data', chunk => { body += chunk; });
+        req.on('end', () => {
+            try {
+                const { filePath } = JSON.parse(body);
+                const decodeFilePath = decodeURIComponent(filePath);
+                if (!decodeFilePath || !fs.existsSync(decodeFilePath)) {
+                    res.writeHead(404, { 'Content-Type': 'text/plain' });
+                    res.end('파일을 찾을 수 없습니다.');
+                    return;
+                }
+
+                exec(`start "" "${decodeFilePath}"`, (err) => {
+                    if (err) {
+                        console.error("파일 실행 오류:", err);
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('파일을 실행할 수 없습니다.');
+                    } else {
+                        res.writeHead(200, { 'Content-Type': 'text/plain' });
+                        res.end('파일이 실행되었습니다.');
+                    }
+                });
+            } catch (error) {
+                res.writeHead(400, { 'Content-Type': 'text/plain' });
+                res.end('잘못된 요청 형식입니다.');
+            }
+        });
     } else {
         res.writeHead(404, {'Content-Type' : 'application/json'});
             res.end(JSON.stringify({message:"route not found"}));
