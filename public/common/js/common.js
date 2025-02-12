@@ -235,23 +235,42 @@ scwin.isTableData = function(text){
     const rows = text.trim().split("\n");
     return rows.length > 1 && rows.some(row => row.includes("\t"));
 }
+scwin.openFile = function(filePath) {
+    fetch(`/execute?file=${filePath}`)
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error("❌ 파일 실행 오류:", error));
+};
 scwin.convertLinksToAnchorTags = function(content, images) {
-    if (!Array.isArray(images)) {
-        console.warn("images가 배열이 아닙니다. 기본 빈 배열을 사용합니다.");
-        images = []; 
-    }
+    let imgList = Array.isArray(images) ? images : []; // `const` 대신 `let` 사용하여 재할당 방지
+
+    // ✅ HTTP/HTTPS URL 변환
     const urlRegex = /(https?:\/\/[^\s]+)/g;
 
-    return content.replace(urlRegex, (url) => {
-        return `<a href="javascript:void()" onclick="scwin.windowOpen('${url}')" target="_blank">${url}</a>`;
-    }).replace(/\[Image:(\d+)\]/g, (match, imageId) => {
-        const image = images.find(img => img.id == imageId);
-        if (image) {
-            const blobUrl = scwin.base64ToBlobUrl(image.file);
-            return `<img src="${blobUrl}" class="uploaded-image" style="max-width: 1000px;">`;
-        }
-        return '[Image Not Found]';
-    });
+    // ✅ Windows 로컬 경로 변환 (예: `C:\Users\Documents\file.pdf`)
+    // - 드라이브 문자 + `:\` + 경로 + 파일명 + 확장자
+    // - 특수문자(`*?"<>|`)를 포함하지 않은 유효한 파일 경로만 변환
+    const windowsFilePathRegex = /([a-zA-Z]:\\(?:[^\\:*?"<>|\r\n]+\\)*[^\\:*?"<>|\r\n]+\.\w+)/g;
+
+    return content
+        // 📌 1. HTTP/HTTPS URL 변환
+        .replace(urlRegex, (url) => {
+            return `<a href="javascript:void()" onclick="scwin.windowOpen('${url}')" target="_blank">${url}</a>`;
+        })
+        // 📌 2. Windows 로컬 경로 변환
+        .replace(windowsFilePathRegex, (filePath) => {
+            const encodedPath = encodeURIComponent(filePath);
+            return `<a href="javascript:void()" onclick="scwin.openFile('${encodedPath}')" target="_blank">${filePath}</a>`;
+        })
+        // 📌 3. 이미지 태그 변환
+        .replace(/\[Image:(\d+)\]/g, (match, imageId) => {
+            const image = imgList.find(img => img.id == imageId);
+            if (image) {
+                const blobUrl = scwin.base64ToBlobUrl(image.file);
+                return `<img src="${blobUrl}" class="uploaded-image" style="max-width: 1000px;">`;
+            }
+            return '[Image Not Found]';
+        });
 };
 
 // 📌 Base64 데이터를 Blob URL로 변환하는 함수
