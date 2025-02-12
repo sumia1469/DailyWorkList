@@ -250,7 +250,7 @@ scwin.convertLinksToAnchorTags = function(content, images) {
     // ✅ Windows 로컬 경로 변환 (예: `C:\Users\Documents\file.pdf`)
     // - 드라이브 문자 + `:\` + 경로 + 파일명 + 확장자
     // - 특수문자(`*?"<>|`)를 포함하지 않은 유효한 파일 경로만 변환
-    const windowsFilePathRegex = /([a-zA-Z]:\\(?:[^\\:*?"<>|\r\n]+\\)*[^\\:*?"<>|\r\n]+\.\w+)/g;
+    const windowsFilePathRegex = /([a-zA-Z]:\\(?:[^\\:*?"<>|\r\n]+\\)*[^\\:*?"<>|\r\n]+|\b\\\\[a-zA-Z0-9_.-]+\\[^\s]+)/g;
 
     return content
         // 📌 1. HTTP/HTTPS URL 변환
