@@ -251,6 +251,14 @@ scwin.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
+scwin.copyToClipboard = function(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Content copied to clipboard");
+    }).catch(err => {
+        console.error("Failed to copy content: ", err);
+    });
+};
+
 scwin.convertLinksToAnchorTags = function(content, images) {
     let imgList = Array.isArray(images) ? images : []; // `const` 대신 `let` 사용하여 재할당 방지
 
