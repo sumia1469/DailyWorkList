@@ -241,6 +241,16 @@ scwin.openFile = function(filePath) {
         .then(data => console.log(data))
         .catch(error => console.error("❌ 파일 실행 오류:", error));
 };
+
+scwin.escapeHtml = function(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
 scwin.convertLinksToAnchorTags = function(content, images) {
     let imgList = Array.isArray(images) ? images : []; // `const` 대신 `let` 사용하여 재할당 방지
 
@@ -251,7 +261,7 @@ scwin.convertLinksToAnchorTags = function(content, images) {
     // - 드라이브 문자 + `:\` + 경로 + 파일명 + 확장자
     // - 특수문자(`*?"<>|`)를 포함하지 않은 유효한 파일 경로만 변환
     const windowsFilePathRegex = /([a-zA-Z]:\\(?:[^\\:*?"<>|\r\n]+\\)*[^\\:*?"<>|\r\n]+|\b\\\\[a-zA-Z0-9_.-]+\\[^\s]+)/g;
-
+    const tagRegex = /<pre>(.*?)<\/pre>/gs;
     return content
         // 📌 1. HTTP/HTTPS URL 변환
         .replace(urlRegex, (url) => {
@@ -261,6 +271,10 @@ scwin.convertLinksToAnchorTags = function(content, images) {
         .replace(windowsFilePathRegex, (filePath) => {
             const encodedPath = encodeURIComponent(filePath);
             return `<a href="javascript:void()" onclick="scwin.openFile('${encodedPath}')" target="_blank">${filePath}</a>`;
+        })
+        .replace(tagRegex, (escapeHtml,content,index) => {
+            const escapeContent = scwin.escapeHtml(content);
+            return `<pre style="width:100%;border:1px solid #bbb;padding:10px;background:#ccc">${escapeContent}</pre>`
         })
         // 📌 3. 이미지 태그 변환
         .replace(/\[Image:(\d+)\]/g, (match, imageId) => {
