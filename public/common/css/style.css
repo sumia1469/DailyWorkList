@@ -166,6 +166,15 @@ h2 {
     -bottom: 1px solid #000;
     text-align:left;
 }
+.preStyle {
+    width:100%;
+    border:1px solid #bbb;
+    padding:10px;
+    background:#ccc;
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+}
 
 .content {
     max-height:0;
