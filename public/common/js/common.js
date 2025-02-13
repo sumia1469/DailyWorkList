@@ -259,6 +259,13 @@ scwin.copyToClipboard = function(text) {
     });
 };
 
+scwin.resizePre = function(button) {
+    const preTag = button.closest('.pre-buttons').previousElementSibling;
+    if (preTag.classList.contains('preStyle')) {
+        preTag.style.maxHeight = preTag.style.maxHeight === '500px' ? '300px' : '500px';
+    }
+};
+
 scwin.convertLinksToAnchorTags = function(content, images) {
     let imgList = Array.isArray(images) ? images : []; // `const` 대신 `let` 사용하여 재할당 방지
 
