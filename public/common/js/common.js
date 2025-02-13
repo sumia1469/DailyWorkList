@@ -265,33 +265,31 @@ scwin.resizePre = function(button) {
         preTag.style.maxHeight = preTag.style.maxHeight === '500px' ? '300px' : '500px';
     }
 };
-
 scwin.convertLinksToAnchorTags = function(content, images) {
-    let imgList = Array.isArray(images) ? images : []; // `const` 대신 `let` 사용하여 재할당 방지
+    let imgList = Array.isArray(images) ? images : [];
 
-    // ✅ HTTP/HTTPS URL 변환
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-    // ✅ Windows 로컬 경로 변환 (예: `C:\Users\Documents\file.pdf`)
-    // - 드라이브 문자 + `:\` + 경로 + 파일명 + 확장자
-    // - 특수문자(`*?"<>|`)를 포함하지 않은 유효한 파일 경로만 변환
     const windowsFilePathRegex = /([a-zA-Z]:\\(?:[^\\:*?"<>|\r\n]+\\)*[^\\:*?"<>|\r\n]+|\b\\\\[a-zA-Z0-9_.-]+\\[^\s]+)/g;
     const tagRegex = /<pre>(.*?)<\/pre>/gs;
+
     return content
-        // 📌 1. HTTP/HTTPS URL 변환
         .replace(urlRegex, (url) => {
             return `<a href="javascript:void()" onclick="scwin.windowOpen('${url}')" target="_blank">${url}</a>`;
         })
-        // 📌 2. Windows 로컬 경로 변환
         .replace(windowsFilePathRegex, (filePath) => {
             const encodedPath = encodeURIComponent(filePath);
             return `<a href="javascript:void()" onclick="scwin.openFile('${encodedPath}')" target="_blank">${filePath}</a>`;
         })
-        .replace(tagRegex, (escapeHtml,content,index) => {
+        .replace(tagRegex, (match, content) => {
             const escapeContent = scwin.escapeHtml(content);
-            return `<pre class="preStyle">${escapeContent}</pre>`
+            return `
+                <pre class="preStyle">${escapeContent}</pre>
+                <div class="pre-buttons">
+                    <button onclick="scwin.copyToClipboard('${escapeContent}')">Copy Code</button>
+                    <button onclick="scwin.resizePre(this)">Resize</button>
+                </div>
+            `;
         })
-        // 📌 3. 이미지 태그 변환
         .replace(/\[Image:(\d+)\]/g, (match, imageId) => {
             const image = imgList.find(img => img.id == imageId);
             if (image) {
