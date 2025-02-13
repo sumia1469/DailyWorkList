@@ -274,7 +274,7 @@ scwin.convertLinksToAnchorTags = function(content, images) {
         })
         .replace(tagRegex, (escapeHtml,content,index) => {
             const escapeContent = scwin.escapeHtml(content);
-            return `<pre style="width:100%;border:1px solid #bbb;padding:10px;background:#ccc">${escapeContent}</pre>`
+            return `<pre class="preStyle">${escapeContent}</pre>`
         })
         // 📌 3. 이미지 태그 변환
         .replace(/\[Image:(\d+)\]/g, (match, imageId) => {
