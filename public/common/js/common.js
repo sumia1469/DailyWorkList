@@ -467,37 +467,37 @@ window.onload = async () => {
     })
     
     document.body.addEventListener("click", (event) => {
-    if (event.target.tagName.toLowerCase() === "button") {
-      const button = event.target;
-      const preContainer = button.closest('.pre-buttons');
-
-      if (preContainer) {
-        const preTag = preContainer.previousElementSibling;
-
-        if (preTag && preTag.tagName.toLowerCase() === "pre") {
-          const htmlText = preTag.innerHTML; // HTML 포함 복사
-
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(htmlText).then(() => {
-              alert("HTML 코드가 클립보드에 복사되었습니다!");
-            }).catch((err) => {
-              console.error("클립보드 복사 실패:", err);
-            });
-          } else {
-            // execCommand() 백업 방식
-            const textarea = document.createElement("textarea");
-            textarea.value = htmlText;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textarea);
-
-            alert("HTML 코드가 클립보드에 복사되었습니다! (백업 방식)");
-          }
-        } else {
-          alert("이전 태그가 <pre>가 아닙니다.");
+        if (event.target.tagName.toLowerCase() === "button") {
+            const button = event.target;
+            const preContainer = button.closest('.pre-buttons');
+    
+            if (preContainer) {
+                const preTag = preContainer.previousElementSibling;
+    
+                if (preTag && preTag.tagName.toLowerCase() === "pre") {
+                    scwin.selectText(preTag); // Select the text inside the pre tag
+                    const htmlText = preTag.innerText; // Get the inner text of the pre tag
+    
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(htmlText).then(() => {
+                            alert("Text has been copied to the clipboard!");
+                        }).catch((err) => {
+                            console.error("Clipboard copy failed:", err);
+                        });
+                    } else {
+                        const textarea = document.createElement("textarea");
+                        textarea.value = htmlText;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(textarea);
+    
+                        alert("Text has been copied to the clipboard! (Fallback method)");
+                    }
+                } else {
+                    alert("The previous tag is not a <pre> tag.");
+                }
+            }
         }
-      }
-    }
-  });
+    });
 }
