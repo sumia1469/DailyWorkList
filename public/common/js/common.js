@@ -251,14 +251,6 @@ scwin.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-scwin.copyToClipboard = function(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Content copied to clipboard");
-    }).catch(err => {
-        console.error("Failed to copy content: ", err);
-    });
-};
-
 scwin.resizePre = function(button) {
     const preTag = button.closest('.pre-buttons').previousElementSibling;
     if (preTag.classList.contains('preStyle')) {
@@ -285,7 +277,7 @@ scwin.convertLinksToAnchorTags = function(content, images) {
             return `
                 <pre class="preStyle">${escapeContent}</pre>
                 <div class="pre-buttons">
-                    <button onclick="scwin.copyToClipboard('${escapeContent}')">Copy Code</button>
+                    <button class="copyButton">Copy Code</button>
                     <button onclick="scwin.resizePre(this)">Resize</button>
                 </div>
             `;
@@ -459,4 +451,39 @@ window.onload = async () => {
             }
         }
     })
+    
+    document.body.addEventListener("click", (event) => {
+    if (event.target.tagName.toLowerCase() === "button") {
+      const button = event.target;
+      const preContainer = button.closest('.pre-buttons');
+
+      if (preContainer) {
+        const preTag = preContainer.previousElementSibling;
+
+        if (preTag && preTag.tagName.toLowerCase() === "pre") {
+          const htmlText = preTag.innerHTML; // HTML 포함 복사
+
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(htmlText).then(() => {
+              alert("HTML 코드가 클립보드에 복사되었습니다!");
+            }).catch((err) => {
+              console.error("클립보드 복사 실패:", err);
+            });
+          } else {
+            // execCommand() 백업 방식
+            const textarea = document.createElement("textarea");
+            textarea.value = htmlText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            alert("HTML 코드가 클립보드에 복사되었습니다! (백업 방식)");
+          }
+        } else {
+          alert("이전 태그가 <pre>가 아닙니다.");
+        }
+      }
+    }
+  });
 }
