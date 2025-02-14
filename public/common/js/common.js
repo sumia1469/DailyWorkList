@@ -467,7 +467,7 @@ window.onload = async () => {
     })
     
     document.body.addEventListener("click", (event) => {
-        if (event.target.tagName.toLowerCase() === "button") {
+        if (event.target.tagName.toLowerCase() === "button" && event.target.classList.contains('copyButton')) {
             const button = event.target;
             const preContainer = button.closest('.pre-buttons');
     
